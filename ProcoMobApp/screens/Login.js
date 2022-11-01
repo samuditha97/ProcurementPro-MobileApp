@@ -13,10 +13,11 @@ import {
 
 } from 'react-native';
 
-export default function Login() {
+export default function Login(props) {
     return (
         
         <ImageBackground source={require('../assets/cover.jpg')} style={styles.container1}>
+
          <View style={styles.container}>
              <View style={styles.inputContainer}>
              
@@ -45,7 +46,7 @@ export default function Login() {
             <Text>Forgot your password?</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight style={styles.buttonContainer} >
+        <TouchableHighlight style={styles.buttonContainer} onPress={() => props.navigation.navigate('Signup')}>
             <Text>Register</Text>
         </TouchableHighlight>
         </View>
@@ -58,9 +59,10 @@ export default function Login() {
 const styles = StyleSheet.create({
     container1: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop:0
+         justifyContent: 'center',
+         alignItems: 'center',
+        marginTop:0,
+    
         
     },
     container: {
@@ -103,12 +105,12 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom:20,
+      marginBottom:10,
       width:250,
       borderRadius:30,
     },
     loginButton: {
-      backgroundColor: "#00b5ec",
+      backgroundColor: "#000000",
       opacity: 10.9
     },
     loginText: {

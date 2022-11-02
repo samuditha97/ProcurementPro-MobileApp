@@ -10,10 +10,9 @@ import {
     Alert,
     ImageBackground
 
-
 } from 'react-native';
 
-export default function Login(props) {
+export default function Signup(props) {
     return (
         
         <ImageBackground source={require('../assets/cover.jpg')} style={styles.container1}>
@@ -21,7 +20,7 @@ export default function Login(props) {
          <View style={styles.container}>
              <View style={styles.inputContainer}>
              
-          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
+
           <TextInput style={styles.inputs}
               placeholder="Name"
               keyboardType="text"
@@ -30,7 +29,7 @@ export default function Login(props) {
         </View>
         <View style={styles.inputContainer}>
              
-          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
+
           <TextInput style={styles.inputs}
               placeholder="NIC"
               keyboardType="text"
@@ -39,7 +38,7 @@ export default function Login(props) {
         </View>
         <View style={styles.inputContainer}>
              
-          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
+
           <TextInput style={styles.inputs}
               placeholder="Email"
               keyboardType="email-address"
@@ -48,19 +47,19 @@ export default function Login(props) {
         </View>
         <View style={styles.inputContainer}>
              
-             <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
+
              <TextInput style={styles.inputs}
                  placeholder="Mobile"
-                 keyboardType="number"
+                 keyboardType="phone-pad"
                  underlineColorAndroid='transparent'
                  />
            </View>
            <View style={styles.inputContainer}>
              
-             <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
+           
              <TextInput style={styles.inputs}
                  placeholder="Password"
-                 keyboardType="text"
+                 keyboardType="visible-password"
                  underlineColorAndroid='transparent'
                  />
            </View>

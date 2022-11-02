@@ -21,7 +21,6 @@ export default function Login(props) {
          <View style={styles.container}>
              <View style={styles.inputContainer}>
              
-          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
           <TextInput style={styles.inputs}
               placeholder="Email"
               keyboardType="email-address"
@@ -30,7 +29,6 @@ export default function Login(props) {
         </View>
         
         <View style={styles.inputContainer}>
-          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/key-2/ultraviolet/50/3498db'}}/>
           <TextInput style={styles.inputs}
               placeholder="Password"
               secureTextEntry={true}
@@ -38,8 +36,8 @@ export default function Login(props) {
               />
         </View>
 
-        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} >
-          <Text style={styles.loginText}>Login</Text>
+        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => props.navigation.navigate('Purchase')} >
+          <Text style={styles.loginText} >Login</Text>
         </TouchableHighlight>
 
         <TouchableHighlight style={styles.buttonContainer} >

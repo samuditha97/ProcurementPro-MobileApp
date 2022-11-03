@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
          justifyContent: 'center',
          alignItems: 'center',
         marginTop:0,
+        width:400
     
         
     },

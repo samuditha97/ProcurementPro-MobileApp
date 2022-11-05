@@ -9,7 +9,6 @@ import {
   ScrollView,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import DatePicker from 'react-native-date-picker'
 
 export default function Purchace() {
 
@@ -36,9 +35,8 @@ export default function Purchace() {
   ];
   const [value3, setValue3] = useState(null);
 
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
 
+  
   return (
     <View
       style={[
@@ -130,14 +128,7 @@ export default function Purchace() {
             setValue3(item.value);
           }}
         />
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.inputs}
-            placeholder="Goods Required Date"
-            keyboardType="date"
-            underlineColorAndroid="transparent"
-          />
-        </View>
+           
 
         <TouchableHighlight
           style={[styles.buttonContainer, styles.loginButton]}
@@ -146,8 +137,13 @@ export default function Purchace() {
         </TouchableHighlight>
       </ScrollView>
     </View>
+    
+
   );
 }
+
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -257,5 +253,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginLeft: 50,
-  }
+  },
+  datePickerStyle: {
+    width: 200,
+    marginTop: 20,
+  },
 });

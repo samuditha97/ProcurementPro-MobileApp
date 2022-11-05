@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     StyleSheet,
     Text,
@@ -11,8 +11,18 @@ import {
     ImageBackground
 
 } from 'react-native';
+import { Dropdown } from "react-native-element-dropdown";
+
 
 export default function Signup(props) {
+
+  const data = [
+    { label: "Procurement", value: "1" },
+    { label: "Management", value: "2" },
+    { label: "Onsite", value: "3" },
+    { label: "Other", value: "4" },
+  ];
+  const [value, setValue] = useState(null);
     return (
         
         <ImageBackground source={require('../assets/cover.jpg')} style={styles.container1}>
@@ -54,9 +64,22 @@ export default function Signup(props) {
                  underlineColorAndroid='transparent'
                  />
            </View>
+           <Dropdown
+          style={styles.inputContainer}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          iconStyle={styles.iconStyle}
+          data={data}
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder="Order Type"
+          value={value}
+          onChange={(item) => {
+            setValue(item.value);
+          }}
+        />
            <View style={styles.inputContainer}>
-             
-           
              <TextInput style={styles.inputs}
                  placeholder="Password"
                  keyboardType="visible-password"
@@ -141,5 +164,14 @@ const styles = StyleSheet.create({
     },
     loginText: {
       color: 'white',
-    }
+    },
+    icon: {
+      marginRight: 5,
+    },
+    placeholderStyle: {
+      fontSize: 15,
+    },
+    selectedTextStyle: {
+      fontSize: 15,
+    },
   });

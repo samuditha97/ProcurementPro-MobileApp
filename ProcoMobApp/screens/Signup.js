@@ -112,6 +112,7 @@ export const Signup = ({ navigation }) => {
             placeholder="Name"
             keyboardType="text"
             underlineColorAndroid="transparent"
+            value={name}
             onChangeText={(name) => setName(name)}
           />
           <TextInput
@@ -119,6 +120,7 @@ export const Signup = ({ navigation }) => {
             placeholder="NIC"
             keyboardType="text"
             underlineColorAndroid="transparent"
+            value={nic}
             onChangeText={(nic) => setNIC(nic)}
           />
           <TextInput
@@ -126,6 +128,7 @@ export const Signup = ({ navigation }) => {
             placeholder="Email"
             keyboardType="email-address"
             underlineColorAndroid="transparent"
+            value={email}
             onChangeText={(email) => setEmail(email)}
           />
           <TextInput
@@ -133,6 +136,7 @@ export const Signup = ({ navigation }) => {
             placeholder="Mobile"
             keyboardType="phone-pad"
             underlineColorAndroid="transparent"
+            value={mobile}
             onChangeText={(mobile) => setMobile(mobile)}
           />
           <Dropdown
@@ -152,6 +156,7 @@ export const Signup = ({ navigation }) => {
             keyboardType="password"
             secureTextEntry={true}
             underlineColorAndroid="transparent"
+            value={password}
             onChangeText={(password) => setPassword(password)}
           />
           <TouchableHighlight style={styles.button} onPress={handleRegister}>

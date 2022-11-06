@@ -76,6 +76,7 @@ export const Login = ({ navigation }) => {
             placeholder="Email"
             keyboardType="email-address"
             underlineColorAndroid="transparent"
+            value={email}
             onChangeText={(email) => setEmail(email)}
           />
           <TextInput
@@ -84,6 +85,7 @@ export const Login = ({ navigation }) => {
             keyboardType="password"
             secureTextEntry={true}
             underlineColorAndroid="transparent"
+            value={password}
             onChangeText={(password) => setPassword(password)}
           />
           <TouchableHighlight style={styles.button} onPress={handleLogin}>

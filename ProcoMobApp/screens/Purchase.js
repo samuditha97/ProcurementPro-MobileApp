@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StyleSheet,
   Text,
@@ -10,39 +12,111 @@ import {
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-export default function Purchase(props) {
+const Purchase = () => {
+  const [type, setType] = useState(null);
+  const [name, setName] = useState(null);
+  const [unit, setUnit] = useState(null);
+  const [quantity, setQuantity] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [supplier, setSupplier] = useState(null);
+  const [data3, setData3] = useState([{ label: null, value: null }]);
 
-  //order type drop down 
   const data = [
     { label: "Delivery", value: "1" },
     { label: "Manufacture", value: "2" },
     { label: "Retail", value: "3" },
   ];
-
-  const [value, setValue] = useState(null);
-
-  //measuring unit drop down
   const data2 = [
     { label: "Kilogram(Kg)", value: "1" },
     { label: "gram(g)", value: "2" },
   ];
-  const [value2, setValue2] = useState(null);
 
-  //supplier drop down
-  const data3 = [
-    { label: "Supplier 1", value: "1" },
-    { label: "Supplier 2", value: "2" },
-  ];
-  const [value3, setValue3] = useState(null);
+  const reset = () => {
+    setType(null);
+    setName(null);
+    setUnit(null);
+    setQuantity(null);
+    setDescription(null);
+    setSupplier(null);
+  };
 
+  useEffect(() => {
+    const validate = async () => {
+      const token = await AsyncStorage.getItem("token");
+      if (!token) navigation.navigate("Login");
+    };
+    validate();
+    reset();
+  }, []);
 
-  
+  useEffect(() => {
+    const getSuppliers = async () => {
+      const token = await AsyncStorage.getItem("token");
+      await axios
+        .get("https://pms-92dm.onrender.com/api/supplier", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            const sups = res.data?.data;
+            const s = sups?.map((sup) => {
+              return {
+                label: sup?.company,
+                value: sup?._id,
+              };
+            });
+            setData3(s);
+          }
+        });
+    };
+    getSuppliers();
+  }, []);
+
+  const handlePlaceOrder = async () => {
+    if (!type) alert("Please, select an order type");
+    else if (!name) alert("Please, enter an item name");
+    else if (!unit) alert("Please, select an measuring unit");
+    else if (!quantity) alert("Please, enter the quantity");
+    else if (!description) alert("Please, enter the description");
+    else if (!supplier) alert("Please, select a supplier");
+    else {
+      const token = await AsyncStorage.getItem("token");
+      await axios
+        .post(
+          "https://pms-92dm.onrender.com/api/orderNew",
+          {
+            ordertype: type,
+            itemName: name,
+            measuringUnit: unit,
+            quantity: unit,
+            description: description,
+            supplierID: supplier,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            reset();
+            alert("Order placed success.");
+          } else {
+            alert("Oops... Something went wrong!");
+          }
+        })
+        .catch(() => alert("Oops... Something went wrong!"));
+    }
+  };
+
   return (
     <View
       style={[
         styles.container,
         {
-          // Try setting `flexDirection` to `"row"`.
           flexDirection: "column",
         },
       ]}
@@ -66,18 +140,18 @@ export default function Purchase(props) {
           labelField="label"
           valueField="value"
           placeholder="Order Type"
-          value={value}
+          value={type}
           onChange={(item) => {
-            setValue(item.value);
+            setType(item.value);
           }}
         />
-
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.inputs}
             placeholder="Item Name"
             keyboardType="text"
             underlineColorAndroid="transparent"
+            onChangeText={(text) => setName(text)}
           />
         </View>
         <Dropdown
@@ -90,9 +164,9 @@ export default function Purchase(props) {
           labelField="label"
           valueField="value"
           placeholder="Measuring Unit"
-          value={value2}
+          value={unit}
           onChange={(item) => {
-            setValue2(item.value);
+            setUnit(item.value);
           }}
         />
         <View style={styles.inputContainer}>
@@ -101,16 +175,18 @@ export default function Purchase(props) {
             placeholder="Quantity"
             keyboardType="number-pad"
             underlineColorAndroid="transparent"
+            onChangeText={(text) => setQuantity(text)}
           />
         </View>
         <View style={styles.multiline}>
           <TextInput
             style={styles.inputs}
-            placeholder= "Description"
+            placeholder="Description"
             keyboardType="text"
             multiline={true}
-            numberOfLines={5}     
+            numberOfLines={5}
             underlineColorAndroid="transparent"
+            onChangeText={(text) => setDescription(text)}
           />
         </View>
         <Dropdown
@@ -123,27 +199,22 @@ export default function Purchase(props) {
           labelField="label"
           valueField="value"
           placeholder="Supplier"
-          value={value3}
+          value={supplier}
           onChange={(item) => {
-            setValue3(item.value);
+            setSupplier(item.value);
           }}
         />
-           
 
         <TouchableHighlight
+          onPress={handlePlaceOrder}
           style={[styles.buttonContainer, styles.loginButton]}
         >
-          <Text style={styles.loginText} >Purchase Order</Text>
+          <Text style={styles.loginText}>Purchase Order</Text>
         </TouchableHighlight>
       </ScrollView>
     </View>
-    
-
   );
-}
-
-
-
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -158,8 +229,8 @@ const styles = StyleSheet.create({
   },
   container2: {
     flex: 3,
+    zIndex: 1,
     backgroundColor: "#E8E4C9",
-    borderTopLeftRadius: 700,
     marginLeft: 10,
     marginBottom: 1,
     marginTop: -630,
@@ -244,7 +315,7 @@ const styles = StyleSheet.create({
   },
   multiline: {
     borderColor: "#254117",
-    backgroundColor: "#7C9D8E",
+    backgroundColor: "transparent",
     borderRadius: 2,
     borderWidth: 1,
     width: 300,
@@ -259,3 +330,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
+export default Purchase;

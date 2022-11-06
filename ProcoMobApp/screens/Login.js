@@ -18,17 +18,22 @@ export const Login = ({ navigation }) => {
 
   const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
+  const reset = () => {
+    setEmail(null);
+    setPassword(null);
+  };
+
   useEffect(() => {
     const validate = async () => {
       const token = await AsyncStorage.getItem("token");
       if (token) navigation.navigate("Purchase");
     };
     validate();
+    reset();
   }, []);
 
   const handleLogin = async () => {
     if (!String(email).match(emailRegEx)) {
-      console.log(email);
       alert("Please, enter a valid email");
     } else if (!password) {
       alert("Please, enter a password");
@@ -41,8 +46,7 @@ export const Login = ({ navigation }) => {
         .then(async (res) => {
           if (res?.status === 200 && res?.data?.data?.token) {
             await AsyncStorage.setItem("token", res.data.data.token);
-            setEmail(null);
-            setPassword(null);
+            reset();
             navigation.navigate("Purchase");
           } else {
             alert("Invalid username or password.");

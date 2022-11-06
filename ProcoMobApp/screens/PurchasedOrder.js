@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
+import { View, Text } from "react-native";
 
-function PurchasedOrder() {
+export const PurchasedOrder = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
-
-export default PurchasedOrder
+    <View>
+      <Text>Hi</Text>
+      <Text>Hi</Text>
+      <Text>Hi</Text>
+      <Text>Hi</Text>
+      <Text>Hi</Text>
+      <Text>Hi</Text>
+    </View>
+  );
+};

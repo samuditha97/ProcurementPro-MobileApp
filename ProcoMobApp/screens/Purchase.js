@@ -151,6 +151,7 @@ const Purchase = () => {
             placeholder="Item Name"
             keyboardType="text"
             underlineColorAndroid="transparent"
+            value={name}
             onChangeText={(text) => setName(text)}
           />
         </View>
@@ -175,6 +176,7 @@ const Purchase = () => {
             placeholder="Quantity"
             keyboardType="number-pad"
             underlineColorAndroid="transparent"
+            value={quantity}
             onChangeText={(text) => setQuantity(text)}
           />
         </View>
@@ -186,6 +188,7 @@ const Purchase = () => {
             multiline={true}
             numberOfLines={5}
             underlineColorAndroid="transparent"
+            value={description}
             onChangeText={(text) => setDescription(text)}
           />
         </View>

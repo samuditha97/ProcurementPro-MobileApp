@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,28 +7,22 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import axios from "axios";
 
-export default class Placed_Order extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-    };
-  }
+const Placed_Order = () => {
+  const [items, setItems] = useState([]);
 
-  componentDidMount() {
-    this.getDataFromAPI();
-  }
-
-  getDataFromAPI = async () => {
+  const getDataFromAPI = async () => {
     const endpoint = "https://pms-92dm.onrender.com/api/orderNew/";
     const res = await fetch(endpoint);
     const data = await res.json();
-    this.setState({ items: data.data });
+    setItems(data.data);
   };
 
-  _renderItem = ({ item, index }) => {
+  useEffect(() => {
+    getDataFromAPI();
+  }, []);
+
+  const renderItem = ({ item, index }) => {
     let { cardText, card } = styles;
 
     return (
@@ -42,37 +36,31 @@ export default class Placed_Order extends PureComponent {
       </TouchableOpacity>
     );
   };
-  render() {
-    let { container3 } = styles;
-    let { items } = this.state;
-    return (
-      <View
-        style={[
-          styles.container,
-          {
-            flexDirection: "column",
-          },
-        ]}
-      >
-        <View style={{ flex: 1 }}>
-          <Text style={styles.text1}>Placed Order Requests</Text>
-          <Image
-            style={styles.image}
-            source={require("../assets/placed.jpg")}
-          />
-        </View>
-        <View style={styles.container2}>
-          <FlatList
-            style={container3}
-            data={items}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={this._renderItem}
-          />
-        </View>
+
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          flexDirection: "column",
+        },
+      ]}
+    >
+      <View style={{ flex: 1 }}>
+        <Text style={styles.text1}>Placed Order Requests</Text>
+        <Image style={styles.image} source={require("../assets/placed.jpg")} />
       </View>
-    );
-  }
-}
+      <View style={styles.container2}>
+        <FlatList
+          style={styles.container3}
+          data={items}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+        />
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -160,3 +148,5 @@ const styles = StyleSheet.create({
     },
   },
 });
+
+export default Placed_Order;

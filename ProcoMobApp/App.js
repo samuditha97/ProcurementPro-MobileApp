@@ -7,7 +7,6 @@ import Login from './screens/Login';
 import Signup from './screens/Signup';
 import Purchase from './screens/Purchase';
 import PlacedOrder from './screens/Placed_Order';
-import PurchasedOrder from './screens/PurchasedOrder';
 
 const Drawer = createDrawerNavigator();
 
@@ -20,7 +19,7 @@ export default function App() {
         <Drawer.Screen name="Signup" component={Signup} />
         <Drawer.Screen name="Purchase" component={Purchase} />
         <Drawer.Screen name="Placed Order" component={PlacedOrder} />
-        <Drawer.Screen name="Purchased Order" component={PurchasedOrder} />
+
       </Drawer.Navigator>
     </NavigationContainer>
   );

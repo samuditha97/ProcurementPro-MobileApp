@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   StyleSheet,
@@ -29,6 +29,15 @@ export const Signup = ({ navigation }) => {
   const [password, setPassword] = useState(null);
 
   const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+  const reset = () => {
+    setName(null);
+    setNIC(null);
+    setEmail(null);
+    setMobile(null);
+    setDepartment(null);
+    setPassword(null);
+  };
 
   const handleRegister = async () => {
     let role;
@@ -69,12 +78,7 @@ export const Signup = ({ navigation }) => {
         })
         .then(async (res) => {
           if (res?.status === 200) {
-            setName(null);
-            setNIC(null);
-            setEmail(null);
-            setMobile(null);
-            setDepartment(null);
-            setPassword(null);
+            reset();
             alert("Registration success!");
           } else {
             alert("Oops... Something went wrong!");
@@ -85,6 +89,10 @@ export const Signup = ({ navigation }) => {
         });
     }
   };
+
+  useEffect(() => {
+    reset();
+  }, []);
 
   return (
     <KeyboardAvoidingView

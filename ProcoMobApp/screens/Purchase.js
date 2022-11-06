@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-export default function Purchace() {
+export default function Purchase(props) {
 
   //order type drop down 
   const data = [
@@ -133,7 +133,7 @@ export default function Purchace() {
         <TouchableHighlight
           style={[styles.buttonContainer, styles.loginButton]}
         >
-          <Text style={styles.loginText}>Purchase Order</Text>
+          <Text style={styles.loginText} >Purchase Order</Text>
         </TouchableHighlight>
       </ScrollView>
     </View>

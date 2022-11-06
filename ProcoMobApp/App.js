@@ -5,8 +5,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import Login from './screens/Login';
 import Signup from './screens/Signup';
-import Purchase from './screens/Purchace';
-import Placed_Order from './screens/Placed_Order';
+import Purchase from './screens/Purchase';
+import PlacedOrder from './screens/Placed_Order';
 import PurchasedOrder from './screens/PurchasedOrder';
 
 const Drawer = createDrawerNavigator();
@@ -19,7 +19,7 @@ export default function App() {
         <Drawer.Screen name="Login" component={Login} />
         <Drawer.Screen name="Signup" component={Signup} />
         <Drawer.Screen name="Purchase" component={Purchase} />
-        <Drawer.Screen name="Placed Order" component={Placed_Order} />
+        <Drawer.Screen name="Placed Order" component={PlacedOrder} />
         <Drawer.Screen name="Purchased Order" component={PurchasedOrder} />
       </Drawer.Navigator>
     </NavigationContainer>

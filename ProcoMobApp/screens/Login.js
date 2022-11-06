@@ -1,118 +1,184 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    Button,
-    TouchableHighlight,
-    Image,
-    Alert,
-    ImageBackground
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableHighlight,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 
+export const Login = ({ navigation }) => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
 
-} from 'react-native';
+  const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-export default function Login(props) {
-    return (
-        
-        <ImageBackground source={require('../assets/cover.jpg')} style={styles.container1}>
+  useEffect(() => {
+    const validate = async () => {
+      const token = await AsyncStorage.getItem("token");
+      if (token) navigation.navigate("Purchase");
+    };
+    validate();
+  }, []);
 
-         <View style={styles.container}>
-             <View style={styles.inputContainer}>
-             
-          <TextInput style={styles.inputs}
-              placeholder="Email"
-              keyboardType="email-address"
-              underlineColorAndroid='transparent'
-              />
+  const handleLogin = async () => {
+    if (!String(email).match(emailRegEx)) {
+      console.log(email);
+      alert("Please, enter a valid email");
+    } else if (!password) {
+      alert("Please, enter a password");
+    } else {
+      await axios
+        .post("https://pms-92dm.onrender.com/api/user/login", {
+          email: email,
+          password: password,
+        })
+        .then(async (res) => {
+          if (res?.status === 200 && res?.data?.data?.token) {
+            await AsyncStorage.setItem("token", res.data.data.token);
+            setEmail(null);
+            setPassword(null);
+            navigation.navigate("Purchase");
+          } else {
+            alert("Invalid username or password.");
+          }
+        })
+        .catch(() => {
+          alert("Oops... Something went wrong!");
+        });
+    }
+  };
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.body}
+    >
+      <Image source={require("../assets/cvr.jpg")} style={styles.cover} />
+      <View style={styles.container}>
+        <View style={styles.innerContainer}>
+          <View style={styles.coverTextContainer}>
+            <Text style={styles.h4}>Welcome to</Text>
+            <Text style={styles.h3}>The Procurement Management Portal</Text>
+          </View>
+          <Text style={styles.label}>Log in</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            keyboardType="email-address"
+            underlineColorAndroid="transparent"
+            onChangeText={(email) => setEmail(email)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            keyboardType="password"
+            secureTextEntry={true}
+            underlineColorAndroid="transparent"
+            onChangeText={(password) => setPassword(password)}
+          />
+          <TouchableHighlight style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Sign in</Text>
+          </TouchableHighlight>
+          <View style={styles.row}>
+            <Text>Don't have an account?</Text>
+            <TouchableHighlight
+              style={styles.transparentButton}
+              onPress={() => navigation.navigate("Signup")}
+            >
+              <Text style={styles.signupText}>Sign up</Text>
+            </TouchableHighlight>
+          </View>
         </View>
-        
-        <View style={styles.inputContainer}>
-          <TextInput style={styles.inputs}
-              placeholder="Password"
-              secureTextEntry={true}
-              underlineColorAndroid='transparent'
-              />
-        </View>
-
-        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => props.navigation.navigate('Purchase')} >
-          <Text style={styles.loginText} >Login</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight style={styles.buttonContainer} >
-            <Text>Forgot your password?</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight style={styles.buttonContainer} onPress={() => props.navigation.navigate('Signup')}>
-            <Text>Register</Text>
-        </TouchableHighlight>
-        </View>
-        </ImageBackground>
-
-    
-    );
-}
+      </View>
+    </KeyboardAvoidingView>
+  );
+};
 
 const styles = StyleSheet.create({
-    container1: {
-        flex: 1,
-         justifyContent: 'center',
-         alignItems: 'center',
-        marginTop:0,
-        width:400
-    
-        
-    },
-    container: {
-     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#7C9D8E',
-    height: 50,
-    width: 700,
-    marginTop: 290,
-    borderTopLeftRadius: 10000,
-    opacity: 0.7
-    },
-    inputContainer: {
-        borderBottomColor: '#F5FCFF',
-        backgroundColor: '#FFFFFF',
-        borderRadius:30,
-        borderBottomWidth: 1,
-        width:250,
-        height:45,
-        marginBottom:20,
-        flexDirection: 'row',
-        alignItems:'center',
-        opacity: 10.9
-    },
-    inputs:{
-        height:45,
-        marginLeft:16,
-        borderBottomColor: '#FFFFFF',
-        flex:1,
-    },
-    inputIcon:{
-      width:30,
-      height:30,
-      marginLeft:15,
-      justifyContent: 'center'
-    },
-    buttonContainer: {
-      height:45,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom:10,
-      width:250,
-      borderRadius:30,
-    },
-    loginButton: {
-      backgroundColor: "#000000",
-      opacity: 10.9
-    },
-    loginText: {
-      color: 'white',
-    }
-  });
+  body: {
+    height: "100%",
+    display: "flex",
+  },
+  cover: {
+    display: "flex",
+    height: "100%",
+    maxHeight: "50%",
+    resizeMode: "cover",
+    width: "100%",
+  },
+  container: {
+    display: "flex",
+    height: "50%",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    padding: 30,
+  },
+  innerContainer: {
+    display: "flex",
+    height: "100%",
+  },
+  coverTextContainer: {
+    marginBottom: 30,
+  },
+  h4: {
+    fontSize: 20,
+    fontWeight: "300",
+    textAlign: "center",
+  },
+  h3: {
+    fontSize: 30,
+    fontWeight: "500",
+    textAlign: "center",
+  },
+  label: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 10,
+  },
+  input: {
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 14,
+    fontSize: 16,
+    borderRadius: 8,
+    marginVertical: 8,
+  },
+  button: {
+    backgroundColor: "#000000",
+    paddingHorizontal: 10,
+    paddingVertical: 14,
+    fontSize: 16,
+    borderRadius: 8,
+    marginTop: 12,
+  },
+  buttonText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  transparentButton: {
+    backgroundColor: "transparent",
+  },
+  signupText: {
+    color: "#000000",
+    fontSize: 16,
+    fontWeight: "700",
+    marginLeft: 3,
+  },
+  row: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+});
